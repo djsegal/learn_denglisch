@@ -5,14 +5,12 @@ class VideosController < ApplicationController
   def index
     @videos = Video.all
 
-    @max_seasons = @videos.map(&:season_number).max
+    @max_seasons = @videos.map(&:season_number).max || -1
   end
 
   # GET /videos/1 or /videos/1.json
   def show
     @videos = Video.all
-
-    @max_seasons = Video.all.map(&:season_number).max
   end
 
   # GET /videos/new
