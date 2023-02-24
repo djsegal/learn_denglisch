@@ -1,0 +1,37 @@
+<%= form_with(model: lemma) do |form| %>
+  <% if lemma.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(lemma.errors.count, "error") %> prohibited this lemma from being saved:</h2>
+
+      <ul>
+        <% lemma.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :name, style: "display: block" %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :type, style: "display: block" %>
+    <%= form.text_field :type %>
+  </div>
+
+  <div>
+    <%= form.label :audio, style: "display: block" %>
+    <%= form.text_field :audio %>
+  </div>
+
+  <div>
+    <%= form.label :word_id, style: "display: block" %>
+    <%= form.text_field :word_id %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

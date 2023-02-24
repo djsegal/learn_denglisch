@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Lemmas</h1>
+
+<div id="lemmas">
+  <% @lemmas.each do |lemma| %>
+    <%= render lemma %>
+    <p>
+      <%= link_to "Show this lemma", lemma %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New lemma", new_lemma_path %>

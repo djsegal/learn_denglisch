@@ -1,0 +1,19 @@
+<%
+  video_path = CGI.unescape(video.file_path.gsub("~","."))
+
+  video_path = Rails.public_path.join(video_path).to_s.split("/")[-2..-1].join("/")
+
+  img_file = "/" + video_path + ".png"
+
+  first_name, last_name = video.name.gsub(")","").split("(")
+%>
+
+<div id="<%= dom_id video %>">
+    <%= link_to video, class: "group" do %>
+      <div class="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 aspect-w-16 aspect-h-9">
+        <img src="<%= img_file %>"class="h-full w-full object-cover object-center group-hover:opacity-75">
+      </div>
+      <h3 class="mt-4 text-sm text-gray-700"><%= last_name %></h3>
+      <p class="mt-1 text-lg font-medium text-gray-900"><%= first_name %></p>
+    <% end %>
+</div>

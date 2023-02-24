@@ -13,3 +13,18 @@
  *= require_tree .
  *= require_self
  */
+
+.video-js .vjs-text-track-cue {
+    margin-top: -0.25em;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.video-js .vjs-text-track-cue div {
+    opacity: 0.8;
+    font-size: 1.5em;
+    color: #FFFF00 !important;
+}
+
+.video-js .vjs-text-track-cue span {
+    opacity: 0.65;
+}

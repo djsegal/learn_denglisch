@@ -5,3 +5,29 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
+
+video_dir = "public/streams/"
+
+video_files = Dir[video_dir + "*\)\.m3u8"].sort
+
+video_files.each do |raw_video|
+    video_name = raw_video
+    video_name = video_name.gsub(video_dir, "")
+    video_name = video_name.gsub(".m3u8", "")
+
+    file_path = CGI.escape(
+        raw_video.gsub(".m3u8","").gsub("public/streams/","streams/")
+    ).gsub(".","~")
+
+    season_number, episode_number = \
+        video_name.match(/\[S(\d+)_E(\d+)\]/).captures.map(&:to_i)
+
+    video_name = video_name.split("]")[-1].gsub(/\s+/, " ")
+
+    Video.create!(
+        name: video_name,
+        season_number: season_number,
+        episode_number: episode_number,
+        file_path: file_path
+    )
+end

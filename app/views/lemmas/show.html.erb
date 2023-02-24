@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @lemma %>
+
+<div>
+  <%= link_to "Edit this lemma", edit_lemma_path(@lemma) %> |
+  <%= link_to "Back to lemmas", lemmas_path %>
+
+  <%= button_to "Destroy this lemma", @lemma, method: :delete %>
+</div>
