@@ -1,4 +1,4 @@
-<% content_for :title, "Videos" %>
+<% content_for :title, "Chez Krömer" %>
 
 <p style="color: green"><%= notice %></p>
 
@@ -60,7 +60,8 @@
 
       <% end %>
 
-      playerTitle = "<br>&nbsp;&nbsp;<b>Chez Krömer</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><br>"
+      playerTitle = "<div class='pt-2 pl-2 pr-6 pb-1'><b>Chez Krömer</b><"
+      playerTitle += "div id='video-description' style='font-size:80%;margin-top:5px'></div></div>";
 
       var player = new Playerjs({
         id: "my-video",
@@ -79,10 +80,24 @@
           return results;
       }
 
+      function updateTitle() {
+        newTitle = "<div class='pt-2 pl-2 pr-6 pb-1'><b>";
+        newTitle +=  player.api("playlist_title").match(/\] [^(]+/g)[0].replaceAll("]","").trim("");
+        newTitle += "</b>";
+
+        newTitle += "<div id='video-description' style='font-size:80%;margin-top:5px'>";
+        newTitle += player.api("playlist_title").match(/\([^\)]+/g)[0].replaceAll("(","").replaceAll("_",". ")
+        newTitle += "</div></div>";
+
+        player.api("title", newTitle);
+      }
+
       function PlayerInit() {
         player.api("moveplaylist","playlist_container");
         player.api("poster","/[S00_E00] Poster.png");
         player.api("subtitle:sizeproc","175%");
+
+        updateTitle();
       }
 
       document.getElementById("my-video").addEventListener("init", PlayerInit);
@@ -90,10 +105,10 @@
 
       function PlayerjsEvents(event,id,data){
         if(event == "new"){
+          updateTitle()
           player.api("stop");
         }
       }
-
     </script>
   </div>
 </div>
