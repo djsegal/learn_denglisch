@@ -40,8 +40,8 @@
             work_video_path = Rails.public_path.join(work_video_path).to_s.split("/")[-2..-1].join("/")
 
             stream_file = cloudinary_url + work_video_path + ".m3u8"
-            english_file = cloudinary_url + work_video_path + "_en.vtt"
-            deutsch_file = cloudinary_url + work_video_path + "_de.vtt"
+            english_file = "/" + work_video_path + "_en.vtt"
+            deutsch_file = "/" + work_video_path + "_de.vtt"
             img_file = cloudinary_url + work_video_path + ".png"
           %>
 
