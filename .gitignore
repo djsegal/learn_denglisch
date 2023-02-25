@@ -38,4 +38,6 @@
 !/app/assets/builds/.keep
 
 .DS_Store
-public/streams/*
+public/streams/*.ts
+public/streams/*.m3u8
+public/streams/*.png

@@ -8,15 +8,15 @@
 
 video_dir = "public/streams/"
 
-video_files = Dir[video_dir + "*\)\.m3u8"].sort
+video_files = Dir[video_dir + "*_en.vtt"].sort
 
 video_files.each do |raw_video|
     video_name = raw_video
     video_name = video_name.gsub(video_dir, "")
-    video_name = video_name.gsub(".m3u8", "")
+    video_name = video_name.gsub("_en.vtt", "")
 
     file_path = CGI.escape(
-        raw_video.gsub(".m3u8","").gsub("public/streams/","streams/")
+        raw_video.gsub("_en.vtt","").gsub("public/streams/","streams/")
     ).gsub(".","~")
 
     season_number, episode_number = \
