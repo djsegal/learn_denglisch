@@ -7,6 +7,7 @@ gem 'nokogiri'
 gem 'httparty'
 gem 'down'
 gem 'cloudinary'
+gem 'parallel'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.4", ">= 7.0.4.2"
