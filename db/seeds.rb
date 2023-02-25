@@ -10,6 +10,8 @@ video_dir = "public/streams/"
 
 video_files = Dir[video_dir + "*_en.vtt"].sort
 
+Video.destroy_all
+
 video_files.each do |raw_video|
     video_name = raw_video
     video_name = video_name.gsub(video_dir, "")
