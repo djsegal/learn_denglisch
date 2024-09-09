@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :proxies
+  resources :newspapers
   resources :videos
   resources :lemmas
   resources :words
@@ -6,5 +8,5 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
-  root to: redirect('/videos')
+  root to: redirect("/newspapers?url=https://slobodnadalmacija.hr/split-i-zupanija")
 end

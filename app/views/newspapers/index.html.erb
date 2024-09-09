@@ -1,0 +1,70 @@
+<% content_for :title, "Slobodna Dalmacija" %>
+<% content_for :search, params[:url] %>
+
+<p style="color: green"><%= notice %></p>
+
+<style>
+  .cs-panel { 
+    width: 50%;
+    padding: 0.25em;
+  }
+
+  .cs-panel-container {
+    display: flex;
+  }
+
+  iframe {
+    height: 70vh;
+    width: 100%;
+  }
+</style>
+
+<div class="mx-auto">
+  <div class="cs-panel-container">
+    <div class="cs-panel notranslate">
+      <iframe id="iframe1" src="/proxies?url=<%= yield(:search) %>" width="100%" height="500px"></iframe>
+
+    </div>
+    <div class="cs-panel">
+       <iframe id="iframe2" src="/proxies?url=<%= yield(:search) %>" width="100%" height="500px"></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    const iframe1 = document.getElementById('iframe1');
+    const iframe2 = document.getElementById('iframe2');
+
+    iframe1.addEventListener('load', function () {
+      let originalIframe = iframe1.contentWindow;
+      let translatedIframe = iframe2.contentWindow;
+
+      // Add scroll event listener to the original iframe
+      originalIframe.addEventListener('scroll', function () {
+        // Get the scroll position
+        let scrollTop = originalIframe.document.documentElement.scrollTop || originalIframe.document.body.scrollTop;
+        let scrollLeft = originalIframe.document.documentElement.scrollLeft || originalIframe.document.body.scrollLeft;
+        
+        // Apply the scroll position to the translated iframe
+        translatedIframe.scrollTo(scrollLeft, scrollTop);
+      });
+    });
+
+    iframe2.addEventListener('load', function () {
+      let originalIframe = iframe2.contentWindow;
+      let translatedIframe = iframe1.contentWindow;
+
+      // Add scroll event listener to the original iframe
+      originalIframe.addEventListener('scroll', function () {
+        // Get the scroll position
+        let scrollTop = originalIframe.document.documentElement.scrollTop || originalIframe.document.body.scrollTop;
+        let scrollLeft = originalIframe.document.documentElement.scrollLeft || originalIframe.document.body.scrollLeft;
+        
+        // Apply the scroll position to the translated iframe
+        translatedIframe.scrollTo(scrollLeft, scrollTop);
+      });
+    });
+
+  });
+</script>
