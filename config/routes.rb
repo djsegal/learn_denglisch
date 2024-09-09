@@ -8,5 +8,5 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
-  root to: redirect("/newspapers?url=https://slobodnadalmacija.hr/split-i-zupanija")
+  root to: redirect("/newspapers?url=https://slobodnadalmacija.hr")
 end
