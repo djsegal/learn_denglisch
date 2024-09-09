@@ -6,111 +6,113 @@
 
 <p style="color: green"><%= notice %></p>
 
-<div class="overflow-hidden rounded-lg bg-gray-200 mx-4 md:mx-16 lg:mx-32" style="text-align: center">
-  <div class="px-4 py-5 sm:p-6">
+<div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+  <div class="overflow-hidden rounded-lg bg-gray-200 mx-4 md:mx-16 lg:mx-32" style="text-align: center">
+    <div class="px-4 py-5 sm:p-6">
 
-    <div id="my-video"></div>
-    <div id="playlist_container" style="background-color: #fff;"></div>
+      <div id="my-video"></div>
+      <div id="playlist_container" style="background-color: #fff;"></div>
 
-    <style>
-      #playlist_container #my-video_playlist {
-        padding-bottom: 0px !important;
-      }
-    </style>
+      <style>
+        #playlist_container #my-video_playlist {
+          padding-bottom: 0px !important;
+        }
+      </style>
 
-    <script>
+      <script>
 
-      var fileList = [];
+        var fileList = [];
 
-      <% @max_seasons.times do |cur_season| %>
+        <% @max_seasons.times do |cur_season| %>
 
-        var subFileList = [];
-
-        <%
-          sub_videos = @videos.filter{
-            |video| video.season_number == cur_season + 1
-          }
-        %>
-
-        <% sub_videos.each do |sub_video| %>
+          var subFileList = [];
 
           <%
-            work_video_path = CGI.unescape(sub_video.file_path.gsub("~","."))
-
-            work_video_path = Rails.public_path.join(work_video_path).to_s.split("/")[-2..-1].join("/")
-
-            stream_file = cloudinary_url + work_video_path + ".m3u8"
-            english_file = "/" + work_video_path + "_en.vtt"
-            deutsch_file = "/" + work_video_path + "_de.vtt"
-            img_file = cloudinary_url + work_video_path + ".png"
+            sub_videos = @videos.filter{
+              |video| video.season_number == cur_season + 1
+            }
           %>
 
-          var subVideoDict = {
-            title: "<img src='<%= img_file %>' width='100%'><%= sub_video.name.split("(")[0].strip.truncate(27) %>",
-            file:"<%= stream_file %>",
-            subtitle:"[DE]<%= deutsch_file %>,[EN]<%= english_file %>",
-            poster:"<%= img_file %>"
-          }
+          <% sub_videos.each do |sub_video| %>
 
-          subFileList.push(subVideoDict);
+            <%
+              work_video_path = CGI.unescape(sub_video.file_path.gsub("~","."))
+
+              work_video_path = Rails.public_path.join(work_video_path).to_s.split("/")[-2..-1].join("/")
+
+              stream_file = cloudinary_url + work_video_path + ".m3u8"
+              english_file = "/" + work_video_path + "_en.vtt"
+              deutsch_file = "/" + work_video_path + "_de.vtt"
+              img_file = cloudinary_url + work_video_path + ".png"
+            %>
+
+            var subVideoDict = {
+              title: "<img src='<%= img_file %>' width='100%'><%= sub_video.name.split("(")[0].strip.truncate(27) %>",
+              file:"<%= stream_file %>",
+              subtitle:"[DE]<%= deutsch_file %>,[EN]<%= english_file %>",
+              poster:"<%= img_file %>"
+            }
+
+            subFileList.push(subVideoDict);
+          <% end %>
+
+          fileList.push({
+            "title": "Season <%= cur_season + 1 %>",
+            "folder": subFileList
+          });
+
         <% end %>
 
-        fileList.push({
-          "title": "Season <%= cur_season + 1 %>",
-          "folder": subFileList
+        playerTitle = "<div class='pt-2 pl-2 pr-6 pb-1'><b>Chez Krömer</b><"
+        playerTitle += "div id='video-description' style='font-size:80%;margin-top:5px'></div></div>";
+
+        var player = new Playerjs({
+          id: "my-video",
+          file: fileList, title: playerTitle,
+          default_subtitle: "All at once"
         });
 
-      <% end %>
-
-      playerTitle = "<div class='pt-2 pl-2 pr-6 pb-1'><b>Chez Krömer</b><"
-      playerTitle += "div id='video-description' style='font-size:80%;margin-top:5px'></div></div>";
-
-      var player = new Playerjs({
-        id: "my-video",
-        file: fileList, title: playerTitle,
-        default_subtitle: "All at once"
-      });
-
-      function getElementsByXPath(xpath, parent)
-      {
-          let results = [];
-          let query = document.evaluate(xpath, parent || document,
-              null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-          for (let i = 0, length = query.snapshotLength; i < length; ++i) {
-              results.push(query.snapshotItem(i));
-          }
-          return results;
-      }
-
-      function updateTitle() {
-        newTitle = "<div class='pt-2 pl-2 pr-6 pb-1'><b>";
-        newTitle +=  player.api("playlist_title").match(/\] [^(]+/g)[0].replaceAll("]","").trim("");
-        newTitle += "</b>";
-
-        newTitle += "<div id='video-description' style='font-size:80%;margin-top:5px'>";
-        newTitle += player.api("playlist_title").match(/\([^\)]+/g)[0].replaceAll("(","").replaceAll("_",". ")
-        newTitle += "</div></div>";
-
-        player.api("title", newTitle);
-      }
-
-      function PlayerInit() {
-        player.api("moveplaylist","playlist_container");
-        player.api("poster","/[S00_E00] Poster.png");
-        player.api("subtitle:sizeproc","175%");
-
-        updateTitle();
-      }
-
-      document.getElementById("my-video").addEventListener("init", PlayerInit);
-      PlayerInit();
-
-      function PlayerjsEvents(event,id,data){
-        if(event == "new"){
-          updateTitle()
-          player.api("stop");
+        function getElementsByXPath(xpath, parent)
+        {
+            let results = [];
+            let query = document.evaluate(xpath, parent || document,
+                null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+            for (let i = 0, length = query.snapshotLength; i < length; ++i) {
+                results.push(query.snapshotItem(i));
+            }
+            return results;
         }
-      }
-    </script>
+
+        function updateTitle() {
+          newTitle = "<div class='pt-2 pl-2 pr-6 pb-1'><b>";
+          newTitle +=  player.api("playlist_title").match(/\] [^(]+/g)[0].replaceAll("]","").trim("");
+          newTitle += "</b>";
+
+          newTitle += "<div id='video-description' style='font-size:80%;margin-top:5px'>";
+          newTitle += player.api("playlist_title").match(/\([^\)]+/g)[0].replaceAll("(","").replaceAll("_",". ")
+          newTitle += "</div></div>";
+
+          player.api("title", newTitle);
+        }
+
+        function PlayerInit() {
+          player.api("moveplaylist","playlist_container");
+          player.api("poster","/[S00_E00] Poster.png");
+          player.api("subtitle:sizeproc","175%");
+
+          updateTitle();
+        }
+
+        document.getElementById("my-video").addEventListener("init", PlayerInit);
+        PlayerInit();
+
+        function PlayerjsEvents(event,id,data){
+          if(event == "new"){
+            updateTitle()
+            player.api("stop");
+          }
+        }
+      </script>
+    </div>
   </div>
 </div>

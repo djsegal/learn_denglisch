@@ -6,37 +6,52 @@
 <style>
   .cs-panel { 
     width: 50%;
-    padding: 0.25em;
+    padding: 0.75em;
   }
 
   .cs-panel-container {
     display: flex;
+    padding: 1em;
   }
 
   iframe {
-    height: 70vh;
     width: 100%;
+  }
+
+  body * {
+      box-sizing: border-box;
   }
 </style>
 
-<div class="mx-auto">
-  <div class="cs-panel-container">
+<div class="mx-auto h-full">
+  <div class="cs-panel-container h-full">
     <div class="cs-panel notranslate">
-      <iframe id="iframe1" src="/proxies?url=<%= yield(:search) %>" width="100%" height="500px"></iframe>
+      <iframe id="iframe1" src="/proxies?url=<%= yield(:search) %>" width="100%" height="100%"></iframe>
 
     </div>
     <div class="cs-panel">
-       <iframe id="iframe2" src="/proxies?url=<%= yield(:search) %>" width="100%" height="500px"></iframe>
+       <iframe id="iframe2" src="/proxies?url=<%= yield(:search) %>" width="100%" height="100%"></iframe>
     </div>
   </div>
 </div>
 
 <script>
+  function custom_resize_function() {
+      var windowHeight = $(window).height();
+      var navHeight = $("body > div > nav").outerHeight();
+      var headerHeight = $("body > div > header").outerHeight();
+
+      var mainHeight = windowHeight - navHeight - headerHeight;
+      $("body > div > main").outerHeight(mainHeight);
+  }
+
   $(document).ready(function() {
     const iframe1 = document.getElementById('iframe1');
     const iframe2 = document.getElementById('iframe2');
 
     iframe1.addEventListener('load', function () {
+      custom_resize_function()
+
       let originalIframe = iframe1.contentWindow;
       let translatedIframe = iframe2.contentWindow;
 
@@ -52,6 +67,8 @@
     });
 
     iframe2.addEventListener('load', function () {
+      custom_resize_function()
+
       let originalIframe = iframe2.contentWindow;
       let translatedIframe = iframe1.contentWindow;
 
@@ -66,5 +83,9 @@
       });
     });
 
+    custom_resize_function();
   });
+
+  $(window).resize(custom_resize_function)
+  $(window).load(custom_resize_function)
 </script>
