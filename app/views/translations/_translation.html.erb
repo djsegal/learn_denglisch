@@ -1,0 +1,22 @@
+<div id="<%= dom_id translation %>">
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Input message:</strong>
+    <%= translation.input_message %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Output message:</strong>
+    <%= translation.output_message %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Language:</strong>
+    <%= translation.language %>
+  </p>
+
+  <% if action_name != "show" %>
+    <%= link_to "Show this translation", translation, class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+    <%= link_to 'Edit this translation', edit_translation_path(translation), class: "rounded-lg py-3 ml-2 px-5 bg-gray-100 inline-block font-medium" %>
+    <hr class="mt-6">
+  <% end %>
+</div>
