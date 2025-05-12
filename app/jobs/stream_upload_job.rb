@@ -3,9 +3,9 @@ class StreamUploadJob < ApplicationJob
 
   def perform(*args)
     Cloudinary.config do |config|
-      config.cloud_name = 'hemu3z3fr'
-      config.api_key = '841439911225851'
-      config.api_secret = 'dWCAE_1WB8iTVZIbjYjviX-O3-c'
+      config.cloud_name = 'dy1vxu2tw'
+      config.api_key = '545452865836584'
+      config.api_secret = 'OjV7-t-KOUR8ESVI1_N6gDJK6nw'
       config.secure = true
     end
 
@@ -32,7 +32,7 @@ class StreamUploadJob < ApplicationJob
     cloudinary_resources.each do |cur_resource|
       work_public_id = "public/" + cur_resource['public_id']
       unless init_file_names.include? work_public_id
-        missing_files += work_public_id
+        missing_files << work_public_id
         next
       end
       raise 'hell' unless cur_resource["bytes"] == File.size(work_public_id)
