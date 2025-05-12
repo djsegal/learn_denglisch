@@ -1,4 +1,29 @@
-<% content_for :title, @saga.name %>
+<% content_for :title do %>
+
+  <div class="relative flex items-center justify-between">
+    <%= @saga.name %> 
+
+    <%
+      babylon_class = ""
+      kromer_class = ""
+
+      if @saga.name == "Babylon Berlin"
+        babylon_class = "bg-gray-200"
+      elsif @saga.name == "Chez Krömer"
+        kromer_class = "bg-gray-200"
+      else
+        raise 'hell'
+      end
+    %>
+
+    <div class="inline-flex border rounded-lg overflow-hidden">
+      <%= link_to "Babylon", Saga.find_by(name: "Babylon Berlin"), {class: babylon_class + " hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-l-lg" } %>
+      <%= link_to "Krömer", Saga.find_by(name: "Chez Krömer"), {class: kromer_class + " hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-l-lg" } %>
+    </div>
+
+  </div>
+
+<% end %>
 
 <%
   cloudinary_url = "https://res.cloudinary.com/dy1vxu2tw/raw/upload/"

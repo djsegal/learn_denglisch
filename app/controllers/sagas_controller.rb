@@ -3,7 +3,7 @@ class SagasController < ApplicationController
 
   # GET /sagas or /sagas.json
   def index
-    redirect_to Saga.first
+    redirect_to Saga.last
     # @sagas = Saga.all
   end
 
