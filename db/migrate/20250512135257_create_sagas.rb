@@ -1,0 +1,9 @@
+class CreateSagas < ActiveRecord::Migration[7.0]
+  def change
+    create_table :sagas do |t|
+      t.string :name
+
+      t.timestamps
+    end
+  end
+end

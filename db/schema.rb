@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_09_09_191734) do
+ActiveRecord::Schema[7.0].define(version: 2025_05_12_145228) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -38,6 +38,20 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_09_191734) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "sagas", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "translations", force: :cascade do |t|
+    t.string "input_message"
+    t.string "output_message"
+    t.string "language"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "videos", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -45,6 +59,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_09_191734) do
     t.integer "season_number"
     t.integer "episode_number"
     t.string "file_path"
+    t.bigint "saga_id", null: false
+    t.index ["saga_id"], name: "index_videos_on_saga_id"
   end
 
   create_table "words", force: :cascade do |t|
@@ -54,4 +70,5 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_09_191734) do
   end
 
   add_foreign_key "lemmas", "words"
+  add_foreign_key "videos", "sagas"
 end
